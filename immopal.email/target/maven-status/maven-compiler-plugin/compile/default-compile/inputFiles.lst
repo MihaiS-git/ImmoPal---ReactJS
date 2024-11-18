@@ -1,0 +1,5 @@
+D:\IT\_GRADUATION24\Project\immopal.email\src\main\java\ubb\graduation24\immopal\email\Application.java
+D:\IT\_GRADUATION24\Project\immopal.email\src\main\java\ubb\graduation24\immopal\email\config\RabbitMQConfig.java
+D:\IT\_GRADUATION24\Project\immopal.email\src\main\java\ubb\graduation24\immopal\email\model\EmailMessageRequest.java
+D:\IT\_GRADUATION24\Project\immopal.email\src\main\java\ubb\graduation24\immopal\email\service\EmailService.java
+D:\IT\_GRADUATION24\Project\immopal.email\src\main\java\ubb\graduation24\immopal\email\service\RabbitMQReceiver.java

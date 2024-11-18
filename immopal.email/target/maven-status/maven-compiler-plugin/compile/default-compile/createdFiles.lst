@@ -1,0 +1,7 @@
+ubb\graduation24\immopal\email\config\RabbitMQConfig$MyFatalExceptionStrategy.class
+ubb\graduation24\immopal\email\config\RabbitMQConfig.class
+ubb\graduation24\immopal\email\model\EmailMessageRequest.class
+ubb\graduation24\immopal\email\Application.class
+ubb\graduation24\immopal\email\service\EmailService.class
+ubb\graduation24\immopal\email\model\EmailMessageRequest$EmailMessageRequestBuilder.class
+ubb\graduation24\immopal\email\service\RabbitMQReceiver.class

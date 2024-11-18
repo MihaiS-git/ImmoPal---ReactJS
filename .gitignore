@@ -1,0 +1,74 @@
+# Node modules
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production build
+build/
+dist/
+
+# Environment variables
+*.env
+
+# Logs
+*.log
+*.gz
+*.tmp
+
+# Dependencies
+package-lock.json
+yarn.lock
+
+# Cache
+.cache/
+.vscode/
+.idea/
+*.iml
+
+# Test coverage
+coverage/
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+
+# React specific
+public/*.cache
+src/**/*.map
+*.chunk.js
+*.chunk.js.map
+service-worker.js
+precache-manifest.*.js
+
+# IDE and editor files
+.classpath
+.project
+.settings/
+.metadata/
+
+# Eclipse
+*.settings
+*.classpath
+*.project
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+generated/
+
+# Gradle
+.gradle/
+build/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+
+# Vite cache 
+.vite
