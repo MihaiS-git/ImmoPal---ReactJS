@@ -2,22 +2,34 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const BASE_URL = 'http://localhost:8080/api';
 
-export const login = createAsyncThunk('auth/login', async (credentials) => {
-    const response = await fetch(`${BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    });
+export const login = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
+    try {
+        const response = await fetch(`${BASE_URL}/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(credentials),
+        });
 
-    if (!response.ok) {
-        throw new Error('Login failed.');
+        if (!response.ok) {
+            const errorData = await response.json();
+            if (response.status === 401) {
+                console.log("Rejecting with: Invalid credentials.");
+                return rejectWithValue('Invalid credentials.');
+            }
+            console.log("Rejecting with:", errorData.message || 'Failed to login.');
+            return rejectWithValue(errorData.message || 'Failed to login.');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Network error:", error);
+        return rejectWithValue('Network error. Please try again later.');
     }
-
-    const data = await response.json();
-    return data;
 });
+
 
 const authSlice = createSlice({
     name: 'auth',

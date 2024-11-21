@@ -1,4 +1,0 @@
-# Created at 2024-08-26T15:02:37.226
-Boot Manifest-JAR contains absolute paths in classpath 'D:\IT\_GRADUATION24\Project\immopal.security-service\target\test-classes'
-Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
-

@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ubb.graduation24.immopal.security_service.domain.PasswordResetToken;
 import ubb.graduation24.immopal.security_service.domain.User;
+import ubb.graduation24.immopal.security_service.exception.InvalidAuthException;
 import ubb.graduation24.immopal.security_service.model.*;
 import ubb.graduation24.immopal.security_service.repository.PasswordResetTokenRepository;
 import ubb.graduation24.immopal.security_service.repository.UserRepository;
@@ -56,8 +57,29 @@ public class AuthenticateUser {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+        log.info("Login attempt for email: {}", request.getEmail());
+
+        try {
+            AuthenticationResponse response = authenticationService.authenticate(request);
+            return ResponseEntity.ok(response);
+        } catch (InvalidAuthException e) {
+            log.warn("Authentication failed: {}", e.getMessage());
+
+            AuthenticationResponse errorResponse = new AuthenticationResponse();
+            errorResponse.setToken(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(errorResponse);
+
+        } catch (Exception e) {
+            log.error("An error occurred during login", e);
+
+            AuthenticationResponse errorResponse = new AuthenticationResponse();
+            errorResponse.setToken(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(errorResponse);
+        }
     }
+
 
     @PatchMapping("/recover-password/{email}")
     public ResponseEntity<?> changePasswordByEmail(@PathVariable String email) {

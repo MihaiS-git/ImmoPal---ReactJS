@@ -7,7 +7,7 @@ import ubb.graduation24.immopal.security_service.model.UserDto;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-08-26T15:02:30+0300",
+    date = "2024-11-21T16:12:38+0200",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (Amazon.com Inc.)"
 )
 @Component

@@ -105,13 +105,14 @@ public class AuthenticationService {
         } catch (BadCredentialsException ex) {
             throw new InvalidAuthException();
         }
-        var user = repository.findByEmail(request.getEmail()).orElseThrow();
+        var user = repository.findByEmail(request.getEmail()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         var jwtToken = jwtService.generateToken(user);
 
         log.info("JWT token: {}", jwtToken);
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
+                .user(user)
                 .build();
     }
 }
