@@ -1,3 +1,23 @@
+**/target
+**/classes
+**/bin
+**/*.log
+**/dist
+**/node_modules
+
+# Credentials
+StoredCredential
+credentials.json
+application-secrets.properties
+
+# Logs
+myapp.log
+*.gz
+*.tmp
+
+# env files
+*.env
+
 # Node modules
 node_modules
 npm-debug.log*
