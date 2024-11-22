@@ -3,6 +3,7 @@ import "./App.css";
 import RootLayout from './components/Root.jsx';
 import HomePage from "./pages/Home.jsx";
 import AuthPage from "./pages/Auth.jsx";
+import RegistrationPage from "./pages/RegistrationPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: 'auth',
         element: <AuthPage/>
+      },
+      {
+        path: 'register',
+        element: <RegistrationPage/>
       }
     ],
   }

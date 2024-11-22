@@ -3,6 +3,7 @@ import FormInputElement from "./FormInputElement";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { login } from "../../store/auth-slice.js";
+import { Link } from "react-router-dom";
 
 export default function AuthForm() {
     const [email, setEmail] = useState("");
@@ -62,6 +63,12 @@ export default function AuthForm() {
                     Login
                 </button>
             </div>
+            <p className="m-4 text-center">
+                Do you have an account?{" "}
+                <Link to="/register" className="text-cyan-800 underline hover:text-red-700">
+                    Sign Up
+                </Link>
+            </p>
         </Form>
     );
 }

@@ -4,7 +4,7 @@ import Footer from "./Footer.jsx";
 
 export default function RootLayout() {
     return (
-        <main className="flex items-center justify-center bg-gradient-to-r from-cyan-950 to-slate-300 min-h-screen w-full font-serif">
+        <main className="flex flex-col bg-gradient-to-r from-cyan-950 to-slate-300 min-h-screen w-full font-serif overflow-y-auto">
             <div
                 className="min-h-screen w-full bg-contain"
                 style={{
@@ -15,10 +15,11 @@ export default function RootLayout() {
                     backgroundAttachment: "fixed",
                 }}
             >
-                <Header/>
+                <Header />
                 <Outlet />
-                <Footer/>
+                <Footer />
             </div>
         </main>
     );
 }
+

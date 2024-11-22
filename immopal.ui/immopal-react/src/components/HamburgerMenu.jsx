@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import MenuElement from "./MenuElement.jsx";
 import { logout } from "../store/auth-slice.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
 export default function HamburgerMenu({ openState, handleClose }) {
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -28,14 +28,25 @@ export default function HamburgerMenu({ openState, handleClose }) {
                     <MenuElement title="Account" />
                     <MenuElement title="Contact" />
                     {!isAuthenticated ? (
-                        <MenuElement title="Sign In" />
+                        <NavLink
+                            className="text-cyan-950 hover:text-cyan-600 active:text-cyan-600 font-bold text-lg mx-2"
+                            to="/auth"
+                            onClick={handleClose}
+                        >
+                            Sign In
+                        </NavLink>
                     ) : (
-                        <MenuElement title="Logout" onClick={handleLogout} />
+                        <NavLink
+                            className="text-cyan-950 hover:text-cyan-600 active:text-cyan-600 font-bold text-lg mx-2"
+                            to="/auth"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </NavLink>
                     )}
                 </ul>
                 <div className="flex justify-end align-bottom">
                     <button
-                        
                         className="bg-cyan-200 text-cyan-950 hover:bg-cyan-950 hover:text-cyan-200 font-extrabold p-2 rounded-md border border-cyan-950"
                         onClick={handleClose}
                     >

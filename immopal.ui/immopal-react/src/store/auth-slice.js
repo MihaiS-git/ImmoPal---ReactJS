@@ -2,6 +2,29 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const BASE_URL = 'http://localhost:8080/api';
 
+export const register = createAsyncThunk('auth/register', async (registerRequest, { rejectWithValue }) => {
+    try {
+
+        const response = await fetch(`${BASE_URL}/auth/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(registerRequest)
+        })
+
+        if (!response.ok) {
+            return rejectWithValue('Failed to register. Please verify the form data.');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.log('Failed to register. ', error);
+        return rejectWithValue('Network error. Failed to Register. Please try again later.')
+    }
+});
+
 export const login = createAsyncThunk('auth/login', async (credentials, { rejectWithValue }) => {
     try {
         const response = await fetch(`${BASE_URL}/auth/login`, {
@@ -62,6 +85,19 @@ const authSlice = createSlice({
                 state.loading = false;
             })
             .addCase(login.rejected, (state) => {
+                state.loading = false;
+            })
+            .addCase(register.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(register.fulfilled, (state, action) => {
+                state.user = null;
+                state.token = action.payload.token;
+                state.tokenExpiresAt = Date.now() + 1000 * 60 * 120;
+                state.isAuthenticated = false;
+                state.loading = false;
+            })
+            .addCase(register.rejected, (state) => {
                 state.loading = false;
             });
     }
