@@ -19,10 +19,10 @@ export default function MainNavigation() {
             <ul className="flex justify-around align-middle py-8 px-8">
                 <MenuElement title="Agencies" />
                 <MenuElement title="Properties" />
-                <MenuElement title="Agencies" />
-                <MenuElement title="Chat" />
-                <MenuElement title="Account" />
-                <MenuElement title="Contact" />
+                {isAuthenticated && <MenuElement title="Auctions" />}
+                {isAuthenticated && <MenuElement title="Chat" />}
+                {isAuthenticated && <MenuElement title="Account" />}
+                <MenuElement title="Contact" toTarget="/contact" />
                 {!isAuthenticated ? (
                     <MenuElement title="Sign In" toTarget={"/auth"} />
                 ) : (

@@ -23,10 +23,10 @@ export default function HamburgerMenu({ openState, handleClose }) {
                 <ul className="flex flex-col items-center space-y-6 text-lg mx-auto">
                     <MenuElement title="Agencies" />
                     <MenuElement title="Properties" />
-                    <MenuElement title="Agencies" />
-                    <MenuElement title="Chat" />
-                    <MenuElement title="Account" />
-                    <MenuElement title="Contact" />
+                    {isAuthenticated && <MenuElement title="Auctions" />}
+                    {isAuthenticated && <MenuElement title="Chat" />}
+                    {isAuthenticated && <MenuElement title="Account" />}
+                    <MenuElement title="Contact" toTarget="/contact" onClick={handleClose}/>
                     {!isAuthenticated ? (
                         <NavLink
                             className="text-cyan-950 hover:text-cyan-600 active:text-cyan-600 font-bold text-lg mx-2"

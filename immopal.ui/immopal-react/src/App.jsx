@@ -4,6 +4,7 @@ import RootLayout from './components/Root.jsx';
 import HomePage from "./pages/Home.jsx";
 import AuthPage from "./pages/Auth.jsx";
 import RegistrationPage from "./pages/RegistrationPage.jsx";
+import ContactPage from "./pages/ContactPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: 'register',
         element: <RegistrationPage/>
+      },
+      {
+        path: 'contact',
+        element: <ContactPage/>
       }
     ],
   }
