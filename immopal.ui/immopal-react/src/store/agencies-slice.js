@@ -2,28 +2,41 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const BASE_URL = 'http://localhost:8080/api'
 
-const getAllAgecies = createAsyncThunk('agencies/getAllAgencies', async (_, { rejectWithValue }) => {
-    try {
+const getAllAgecies = createAsyncThunk(
+    'agencies/getAllAgencies',
+    async (_, { rejectWithValue }) => {
+        const timeout = new Promise((_, reject) => {
+            setTimeout(() => reject(new Error("Request timed out")), 10000)
+        });
+        try {
+            const response = await Promise.race([
+                fetch(`${BASE_URL}/agencies`),
+                timeout
+            ]);
 
-        const response = await fetch(`${BASE_URL}/agencies`);
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            if (response.status === 404) {
-                console.log("Rejecting with: Not found.");
-                return rejectWithValue("Not found.");
+            if (!response.ok) {
+                const errorData = await response.json();
+                if (response.status === 404) {
+                    console.log("Rejecting with: Not found.");
+                    return rejectWithValue("Not found.");
+                }
+                console.log("Rejecting with: ", errorData.message || "Failed to fetch data.");
+                return rejectWithValue(errorData.message || "Failed to fetch data.");
             }
-            console.log("Rejecting with: ", errorData.message || "Failed to fetch data.");
-            return rejectWithValue(errorData.message || "Failed to fetch data.");
-        }
 
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.log("Rejecting with: ", error);
-        return rejectWithValue("Network error or server unreachable.");
-    }
-});
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.log("Rejecting with: ", error);
+            return rejectWithValue("Network error or server unreachable.");
+        }
+    });
+
+const selectAllAgencies = (state) => state.agencies?.agencies || [];
+
+const selectAgencyById = (state, agencyId) =>
+    state.agencies?.agencies?.find((agency) => agency.id === agencyId) || null;
+
 
 const agenciesSlice = createSlice({
     name: 'agencies',
@@ -51,4 +64,4 @@ const agenciesSlice = createSlice({
 });
 
 export default agenciesSlice.reducer;
-export { getAllAgecies };
+export { getAllAgecies, selectAllAgencies, selectAgencyById };

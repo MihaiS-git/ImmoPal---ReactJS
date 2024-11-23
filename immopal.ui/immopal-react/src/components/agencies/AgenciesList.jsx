@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllAgecies } from "../../store/agencies-slice";
+import { getAllAgecies } from "../../store/agencies-slice.js";
 import AgencyCard from "./AgencyCard.jsx";
 
 export default function AgenciesList({ className }) {
@@ -8,21 +8,29 @@ export default function AgenciesList({ className }) {
     const { agencies, loading, error } = useSelector((state) => state.agencies);
 
     useEffect(() => {
-        dispatch(getAllAgecies());
-    }, [dispatch]);
+        if (agencies.length === 0 && !loading) {
+            dispatch(getAllAgecies());
+        }
+    }, [dispatch, agencies.length, loading]);
 
     if (loading) {
         return (
-            <div className="bg bg-cyan-400 rounded-lg p-2 text-red-700 text-center font-bold text-lg mb-4">
-                <p>Loading...</p>
+            <div className="flex items-center justify-center">
+                <div className="w-16 h-16 border-4 border-cyan-400 border-dotted rounded-full animate-spin"></div>
+                <p className="ml-4 text-lg text-cyan-900 font-bold">
+                    Loading...
+                </p>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="bg bg-cyan-400 rounded-lg p-2 text-red-700 text-center font-bold text-lg mb-4">
-                {error}
+            <div className="flex items-center justify-center">
+                <div className="w-16 h-16 border-4 border-cyan-400 border-dotted rounded-full animate-spin"></div>
+                <p className="ml-4 text-lg text-cyan-900 font-bold">
+                    {error} Please try again later.
+                </p>
             </div>
         );
     }
@@ -37,7 +45,11 @@ export default function AgenciesList({ className }) {
 
             <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {agencies.map((agency) => {
-                    return <AgencyCard key={agency.id} agency={agency} />;
+                    return (
+                        <li key={agency.id} className="my-8">
+                            <AgencyCard agency={agency} />
+                        </li>
+                    );
                 })}
             </ul>
         </div>

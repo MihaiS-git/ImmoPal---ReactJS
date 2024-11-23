@@ -6,6 +6,7 @@ import AuthPage from "./pages/Auth.jsx";
 import RegistrationPage from "./pages/RegistrationPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import AgenciesPage from "./pages/AgenciesPage.jsx";
+import AgencyPage from "./pages/AgencyPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: 'agencies',
         element: <AgenciesPage/>
+      },
+      {
+        path: 'agencies/:id',
+        element: <AgencyPage/>
       }
     ],
   }
