@@ -17,7 +17,7 @@ export default function MainNavigation() {
     return (
         <nav className="hidden lg:hidden xl:block">
             <ul className="flex justify-around align-middle py-8 px-8">
-                <MenuElement title="Agencies" />
+                <MenuElement title="Agencies" toTarget="/agencies" />
                 <MenuElement title="Properties" />
                 {isAuthenticated && <MenuElement title="Auctions" />}
                 {isAuthenticated && <MenuElement title="Chat" />}
@@ -26,7 +26,12 @@ export default function MainNavigation() {
                 {!isAuthenticated ? (
                     <MenuElement title="Sign In" toTarget={"/auth"} />
                 ) : (
-                    <button className="text-cyan-950 hover:text-cyan-600 active:text-cyan-600 font-bold text-lg mx-2" onClick={handleLogout}>Logout</button>
+                    <button
+                        className="text-cyan-950 hover:text-cyan-600 active:text-cyan-600 font-bold text-lg mx-2"
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </button>
                 )}
             </ul>
         </nav>

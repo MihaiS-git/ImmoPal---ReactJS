@@ -21,12 +21,16 @@ export default function HamburgerMenu({ openState, handleClose }) {
                     ${openState ? "block" : "hidden"}`}
             >
                 <ul className="flex flex-col items-center space-y-6 text-lg mx-auto">
-                    <MenuElement title="Agencies" />
+                    <MenuElement title="Agencies" toTarget="/agencies" />
                     <MenuElement title="Properties" />
                     {isAuthenticated && <MenuElement title="Auctions" />}
                     {isAuthenticated && <MenuElement title="Chat" />}
                     {isAuthenticated && <MenuElement title="Account" />}
-                    <MenuElement title="Contact" toTarget="/contact" onClick={handleClose}/>
+                    <MenuElement
+                        title="Contact"
+                        toTarget="/contact"
+                        onClick={handleClose}
+                    />
                     {!isAuthenticated ? (
                         <NavLink
                             className="text-cyan-950 hover:text-cyan-600 active:text-cyan-600 font-bold text-lg mx-2"
