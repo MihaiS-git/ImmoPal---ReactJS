@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllAgecies } from "../../store/agencies-slice.js";
+import { getAllAgencies } from "../../store/agencies-slice.js";
 import AgencyCard from "./AgencyCard.jsx";
 
 export default function AgenciesList({ className }) {
@@ -9,7 +9,7 @@ export default function AgenciesList({ className }) {
 
     useEffect(() => {
         if (agencies.length === 0 && !loading) {
-            dispatch(getAllAgecies());
+            dispatch(getAllAgencies());
         }
     }, [dispatch, agencies.length, loading]);
 

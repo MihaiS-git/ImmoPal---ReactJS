@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const BASE_URL = 'http://localhost:8080/api'
 
-const getAllAgecies = createAsyncThunk(
+const getAllAgencies = createAsyncThunk(
     'agencies/getAllAgencies',
     async (_, { rejectWithValue }) => {
         const timeout = new Promise((_, reject) => {
@@ -34,9 +34,11 @@ const getAllAgecies = createAsyncThunk(
 
 const selectAllAgencies = (state) => state.agencies?.agencies || [];
 
-const selectAgencyById = (state, agencyId) =>
-    state.agencies?.agencies?.find((agency) => agency.id === agencyId) || null;
-
+const selectAgencyById = (state, agencyId) => {
+    const agencies = state.agencies?.agencies || [];
+    const searchedAgency = agencies.find((agency) => agency.id === agencyId);
+    return  searchedAgency || null;
+}
 
 const agenciesSlice = createSlice({
     name: 'agencies',
@@ -48,15 +50,15 @@ const agenciesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(getAllAgecies.pending, (state) => {
+            .addCase(getAllAgencies.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(getAllAgecies.fulfilled, (state, action) => {
+            .addCase(getAllAgencies.fulfilled, (state, action) => {
+                state.agencies = action.payload.agencies || [];
                 state.loading = false;
-                state.agencies = action.payload;
                 state.error = null;
             })
-            .addCase(getAllAgecies.rejected, (state, action) => {
+            .addCase(getAllAgencies.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
             })
@@ -64,4 +66,4 @@ const agenciesSlice = createSlice({
 });
 
 export default agenciesSlice.reducer;
-export { getAllAgecies, selectAllAgencies, selectAgencyById };
+export { getAllAgencies, selectAllAgencies, selectAgencyById };

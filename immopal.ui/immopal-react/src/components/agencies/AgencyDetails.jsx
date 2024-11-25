@@ -31,13 +31,23 @@ export default function AgencyDetails({ className }) {
                         consequuntur beatae reiciendis laudantium dicta, sequi
                         dolorum ullam, obcaecati culpa libero blanditiis!
                     </p>
+                    <hr className="border-cyan-950 mx-4 mb-4" />
+                    <p>
+                        <strong>Phone:</strong>{agency.phone}
+                    </p>
+                    <p>
+                        <strong>E-mail:</strong>{agency.email}
+                    </p>
+                    <p>
+                        <strong>Address: </strong>{agency.address.city}, {agency.address.country}
+                    </p>
                 </div>
             </section>
             <section>
                 <div className="flex justify-around">
                     <NavLink
                         className="border border-cyan-950 text-cyan-950 hover:bg-cyan-900 hover:text-cyan-200 md:text-lg rounded-lg p-2"
-                        to="/home"
+                        to={`/agencies/${agency.id}/agents`}
                     >
                         Agents
                     </NavLink>

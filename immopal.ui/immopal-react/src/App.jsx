@@ -7,6 +7,7 @@ import RegistrationPage from "./pages/RegistrationPage.jsx";
 import ContactPage from "./pages/ContactPage.jsx";
 import AgenciesPage from "./pages/AgenciesPage.jsx";
 import AgencyPage from "./pages/AgencyPage.jsx";
+import AgencyAgentsPage from "./pages/AgencyAgentsPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,7 +37,11 @@ const router = createBrowserRouter([
       {
         path: 'agencies/:id',
         element: <AgencyPage/>
-      }
+      },
+      {
+        path: 'agencies/:id/agents',
+        element: <AgencyAgentsPage/>
+      },
     ],
   }
 ]);

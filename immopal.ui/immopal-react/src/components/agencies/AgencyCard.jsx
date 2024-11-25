@@ -20,7 +20,7 @@ export default function AgencyCard({ agency }) {
             <h3 className="font-semibold m-2 text-cyan-400 text-sm md:text-md lg:text-lg">
                 {agency.name}
             </h3>
-            <hr />
+            <hr className="border border-cyan-200 mx-4"/>
             <p className="text-base text-cyan-400 my-2 mx-4 sm:text-sm">
                 {agency.description}
             </p>
