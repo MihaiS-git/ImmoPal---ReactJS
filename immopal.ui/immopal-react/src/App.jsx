@@ -8,8 +8,9 @@ import ContactPage from "./pages/ContactPage.jsx";
 import AgenciesPage from "./pages/AgenciesPage.jsx";
 import AgencyPage from "./pages/AgencyPage.jsx";
 import AgencyAgentsPage from "./pages/AgencyAgentsPage.jsx";
-import AgencyPropertiesPage from "./pages/AgencyPropertiesPage.jsx"
-import PropertyPage from "./pages/PropertyPage.jsx"
+import AgencyPropertiesPage from "./pages/AgencyPropertiesPage.jsx";
+import PropertyPage from "./pages/PropertyPage.jsx";
+import PropertiesPage from "./pages/PropertiesPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
         path: 'properties/:id',
         element: <PropertyPage/>
       },
+      {
+        path: 'properties',
+        element: <PropertiesPage/>
+      }
     ],
   }
 ]);

@@ -18,7 +18,7 @@ export default function MainNavigation() {
         <nav className="hidden lg:hidden xl:block">
             <ul className="flex justify-around align-middle py-8 px-8">
                 <MenuElement title="Agencies" toTarget="/agencies" />
-                <MenuElement title="Properties" />
+                <MenuElement title="Properties" toTarget="/properties"/>
                 {isAuthenticated && <MenuElement title="Auctions" />}
                 {isAuthenticated && <MenuElement title="Chat" />}
                 {isAuthenticated && <MenuElement title="Account" />}
