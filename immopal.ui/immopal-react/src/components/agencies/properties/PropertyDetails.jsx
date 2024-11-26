@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import MapComponent from "../../contact/MapComponent.jsx";
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination } from "swiper/modules";
 
 export default function PropertyDetails({ className }) {
     const { id } = useParams();
@@ -23,11 +23,6 @@ export default function PropertyDetails({ className }) {
         >
             <section className="flex flex-col md:flex-row justify-around align-middle text-center mb-4">
                 <div className="mx-auto md:me-4">
-{/*                     <img
-                        src={property.propertyImages[0]}
-                        alt="Property Image"
-                        className="w-80 h-80 sm:w-96 sm:h-96 md:w-96 md:h-96 lg:w-[400px] lg:h-[400px] xl:w-[500px] xl:h-[500px] rounded-lg mb-4 object-contain"
-                    /> */}
                     <Swiper
                         modules={[Navigation, Pagination]}
                         navigation

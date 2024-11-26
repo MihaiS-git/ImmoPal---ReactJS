@@ -12,28 +12,30 @@ html, body, #root {
   height: 100%;
 }
 
+/* SWIPER - CAROUSEL */
+
 /* Customize the color of the navigation arrows */
 .swiper-button-prev,
 .swiper-button-next {
-    color: #06b6d4 !important; /* Change this to your desired color */
+    color: #06b6d4 !important;
 }
 
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
-    color: #a5f3fc; /* Change the hover color */
+    color: #a5f3fc;
 }
 
 /* Default bullet color */
 .swiper-pagination-bullet {
-  background-color: #06b6d4 !important; /* Change this to your desired color */
+  background-color: #06b6d4 !important;
 }
 
 /* Active bullet color */
 .swiper-pagination-bullet-active {
-  background-color: #67e8f9 !important; /* Change the active bullet color */
+  background-color: #67e8f9 !important;
 }
 
 /* Add hover effect for bullets (optional) */
 .swiper-pagination-bullet:hover {
-  background-color: #a5f3fc; /* Change the hover color */
+  background-color: #a5f3fc;
 }
