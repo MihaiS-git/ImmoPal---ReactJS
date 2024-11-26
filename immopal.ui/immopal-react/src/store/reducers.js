@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import authReducer from './auth-slice.js';
 import agenciesReducer from './agencies-slice.js';
 import agentsReducer from './agents-slice.js';
+import propertiesByAgencyReducer from './agency-properties-slice.js';
 
 const persistConfig = {
     key: 'root',
@@ -15,7 +16,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth: authReducer,
     agencies: agenciesReducer,
-    agents: agentsReducer
+    agents: agentsReducer,
+    propertiesByAgency: propertiesByAgencyReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

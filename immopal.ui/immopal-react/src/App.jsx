@@ -8,6 +8,7 @@ import ContactPage from "./pages/ContactPage.jsx";
 import AgenciesPage from "./pages/AgenciesPage.jsx";
 import AgencyPage from "./pages/AgencyPage.jsx";
 import AgencyAgentsPage from "./pages/AgencyAgentsPage.jsx";
+import AgencyPropertiesPage from "./pages/AgencyPropertiesPage.jsx"
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: 'agencies/:id/agents',
         element: <AgencyAgentsPage/>
+      },
+      {
+        path: 'agencies/:id/properties',
+        element: <AgencyPropertiesPage/>
       },
     ],
   }
