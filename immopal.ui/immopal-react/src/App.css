@@ -11,3 +11,29 @@
 html, body, #root {
   height: 100%;
 }
+
+/* Customize the color of the navigation arrows */
+.swiper-button-prev,
+.swiper-button-next {
+    color: #06b6d4 !important; /* Change this to your desired color */
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+    color: #a5f3fc; /* Change the hover color */
+}
+
+/* Default bullet color */
+.swiper-pagination-bullet {
+  background-color: #06b6d4 !important; /* Change this to your desired color */
+}
+
+/* Active bullet color */
+.swiper-pagination-bullet-active {
+  background-color: #67e8f9 !important; /* Change the active bullet color */
+}
+
+/* Add hover effect for bullets (optional) */
+.swiper-pagination-bullet:hover {
+  background-color: #a5f3fc; /* Change the hover color */
+}

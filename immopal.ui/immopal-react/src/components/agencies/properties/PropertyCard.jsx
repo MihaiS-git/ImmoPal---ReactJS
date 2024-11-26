@@ -1,6 +1,17 @@
-export default function PropertyCard({property}) { 
+import { useNavigate } from "react-router-dom";
+
+export default function PropertyCard({ property }) { 
+    const navigate = useNavigate();
+
+    function handleClick() { 
+        navigate(`/properties/${property.id}`);
+    }
+
     return (
-        <div className="border border-cyam-200 rounded-lg shadow-[2px_2px_6px] shadow-cyan-950 h-full text-clip bg-cyan-900">
+        <div
+            className="border border-cyam-200 rounded-lg shadow-[2px_2px_6px] shadow-cyan-950 h-full text-clip bg-cyan-900"
+            onClick={handleClick}
+        >
             <img
                 src={property.propertyImages[0]}
                 alt="Property Image"

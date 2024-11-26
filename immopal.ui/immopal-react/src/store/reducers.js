@@ -10,7 +10,7 @@ import propertiesByAgencyReducer from './agency-properties-slice.js';
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['auth', 'agencies', 'agents']
+    whitelist: ['auth', 'agencies', 'agents', 'propertiesByAgency']
 };
 
 const rootReducer = combineReducers({

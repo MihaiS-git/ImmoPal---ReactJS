@@ -23,6 +23,16 @@ const getPropertiesByAgency = createAsyncThunk(
     }
 );
 
+const selectPropertyById = (state, propertyId) => {
+    const properties = state.propertiesByAgency?.properties;
+    console.log("PROPERTIES: ", properties);
+    
+    const selectedProperty = properties.find((property) => property.id === propertyId);
+    console.log("SELECTED PROPERTY: ", selectedProperty);
+    
+    return selectedProperty || null;
+};
+
 const propertiesByAgencySlice = createSlice({
     name: 'propertiesByAgency',
     initialState: {
@@ -50,5 +60,5 @@ const propertiesByAgencySlice = createSlice({
     }
 });
 
-export { getPropertiesByAgency };
+export { getPropertiesByAgency, selectPropertyById };
 export default propertiesByAgencySlice.reducer;

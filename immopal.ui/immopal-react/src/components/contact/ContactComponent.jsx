@@ -8,7 +8,7 @@ export default function ContactComponent({ className }) {
             <div className="bg-cyan-200 rounded-3xl mb-10 w-64 sm:w-96 mx-auto">
                 <h2>Contact</h2>
             </div>
-            <MapComponent />
+            <MapComponent lat={46.770439} long={ 23.591423} />
             <div className="my-8 py-4 px-2 bg-cyan-200 rounded-xl w-64 sm:w-96 mx-auto">
                 <p className="text-lg">
                     <strong>Adress: </strong>CJ, RO
