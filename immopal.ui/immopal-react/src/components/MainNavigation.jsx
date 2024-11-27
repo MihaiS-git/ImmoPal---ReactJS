@@ -21,7 +21,7 @@ export default function MainNavigation() {
                 <MenuElement title="Properties" toTarget="/properties"/>
                 {isAuthenticated && <MenuElement title="Auctions" />}
                 {isAuthenticated && <MenuElement title="Chat" />}
-                {isAuthenticated && <MenuElement title="Account" />}
+                {isAuthenticated && <MenuElement title="Account" toTarget="/account" />}
                 <MenuElement title="Contact" toTarget="/contact" />
                 {!isAuthenticated ? (
                     <MenuElement title="Sign In" toTarget={"/auth"} />

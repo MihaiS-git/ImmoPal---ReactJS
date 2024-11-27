@@ -5,13 +5,15 @@ import AgencyCard from "./AgencyCard.jsx";
 
 export default function AgenciesList({ className }) {
     const dispatch = useDispatch();
-    const { agencies, loading, error } = useSelector((state) => state.agencies);
+    const agencies = useSelector((state) => state.agencies.agencies);
+    console.log("Agencies in state:", agencies);
+    
+    const { loading, error } = useSelector((state) => state.agencies);
 
     useEffect(() => {
-        if (agencies.length === 0 && !loading) {
-            dispatch(getAllAgencies());
-        }
-    }, [dispatch, agencies.length, loading]);
+        dispatch(getAllAgencies());
+    }, [dispatch]);
+    console.log("Loading:", loading, "Error:", error);
 
     if (loading) {
         return (

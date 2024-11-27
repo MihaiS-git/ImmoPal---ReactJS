@@ -25,6 +25,7 @@ const getAllAgencies = createAsyncThunk(
             }
 
             const data = await response.json();
+            console.log("API Response:", data);
             return data;
         } catch (error) {
             console.log("Rejecting with: ", error);
@@ -54,7 +55,7 @@ const agenciesSlice = createSlice({
                 state.loading = true;
             })
             .addCase(getAllAgencies.fulfilled, (state, action) => {
-                state.agencies = action.payload.agencies || [];
+                state.agencies = action.payload || [];
                 state.loading = false;
                 state.error = null;
             })
