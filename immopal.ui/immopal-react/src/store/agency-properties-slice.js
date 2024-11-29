@@ -25,11 +25,7 @@ const getPropertiesByAgency = createAsyncThunk(
 
 const selectPropertyById = (state, propertyId) => {
     const properties = state.propertiesByAgency?.properties;
-    console.log("PROPERTIES: ", properties);
-    
     const selectedProperty = properties.find((property) => property.id === propertyId);
-    console.log("SELECTED PROPERTY: ", selectedProperty);
-    
     return selectedProperty || null;
 };
 
@@ -49,7 +45,7 @@ const propertiesByAgencySlice = createSlice({
             .addCase(getPropertiesByAgency.fulfilled, (state, action) => {
                 state.loading = false;
                 if (action.payload) {
-                    state.properties = action.payload;
+                    state.properties = [...action.payload];
                 }
                 state.error = null;
             })

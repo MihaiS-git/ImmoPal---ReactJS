@@ -13,7 +13,8 @@ const getAllProperties = createAsyncThunk(
                 }
                 return rejectWithValue('Failed to fetch properties.')
             }
-            return await response.json();
+            const data = await response.json();
+            return data;
         } catch (error) {
             return rejectWithValue('Network error. Failed to fetch properties. ', error);
         }
@@ -44,7 +45,9 @@ const propertiesSlice = createSlice({
             })
             .addCase(getAllProperties.fulfilled, (state, action) => {
                 state.loading = false;
-                state.properties = action.payload;
+                if (action.payload) {
+                    state.properties = [...action.payload];
+                }
                 state.error = null;
             })
             .addCase(getAllProperties.rejected, (state, action) => {

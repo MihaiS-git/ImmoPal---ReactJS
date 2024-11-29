@@ -19,7 +19,7 @@ export default function MainNavigation() {
             <ul className="flex justify-around align-middle py-8 px-8">
                 <MenuElement title="Agencies" toTarget="/agencies" />
                 <MenuElement title="Properties" toTarget="/properties"/>
-                {isAuthenticated && <MenuElement title="Auctions" />}
+                {isAuthenticated && <MenuElement title="Auctions" toTarget="auctions"/>}
                 {isAuthenticated && <MenuElement title="Chat" />}
                 {isAuthenticated && <MenuElement title="Account" toTarget="/account" />}
                 <MenuElement title="Contact" toTarget="/contact" />

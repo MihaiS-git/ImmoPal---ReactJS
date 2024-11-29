@@ -17,19 +17,15 @@ const getAllAgencies = createAsyncThunk(
             if (!response.ok) {
                 const errorData = await response.json();
                 if (response.status === 404) {
-                    console.log("Rejecting with: Not found.");
                     return rejectWithValue("Not found.");
                 }
-                console.log("Rejecting with: ", errorData.message || "Failed to fetch data.");
                 return rejectWithValue(errorData.message || "Failed to fetch data.");
             }
 
             const data = await response.json();
-            console.log("API Response:", data);
             return data;
         } catch (error) {
-            console.log("Rejecting with: ", error);
-            return rejectWithValue("Network error or server unreachable.");
+            return rejectWithValue("Network error or server unreachable. ", error);
         }
     });
 

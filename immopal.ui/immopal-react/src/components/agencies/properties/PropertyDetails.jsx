@@ -1,28 +1,59 @@
-import { NavLink } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { NavLink, useParams, Form } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import MapComponent from "../../contact/MapComponent.jsx";
+import { format, set } from "date-fns";
 
+import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import { Navigation, Pagination } from "swiper/modules";
+import FormInputElement from "../../auth/FormInputElement.jsx";
+import { addAuctionRoom } from "../../../store/auction-rooms-slice.js";
 
 export default function PropertyDetails({ className }) {
+    const dispatch = useDispatch();
+    const [startDate, setStartDate] = useState();
     const { id } = useParams();
-    const properties = useSelector(
-        (state) => state.propertiesByAgency.properties
+    const user = useSelector((state) => state.auth.user);
+    const properties = useSelector((state) => state.properties.properties || []);
+    const auctionRooms = useSelector(
+        (state) => state.auctionRooms.auctionRooms || []
     );
-    const property = properties.find((property) => property.id === +id);
+    
+    const property = properties.find((p) => p.id === +id);
+    
+    const selectedAuctionRoom = auctionRooms.find(
+        (room) => room.property?.id === property.id
+    );
+
+    function handleCreateAuction(event) {
+        event.preventDefault();
+
+        if (
+            (user.role === "AGENT" || user.role === "ADMIN") &&
+            !selectedAuctionRoom
+        ) {
+            const formattedStartDate = format(
+                set(new Date(startDate), { hours: 0, minutes: 0, seconds: 0 }),
+                "yyyy-MM-dd'T'HH:mm:ss"
+            );
+            dispatch(addAuctionRoom({ propertyId: id, startDate: formattedStartDate }));
+        }
+    }
+
+    if (!property) {
+        return <div>Property not found or still loading...</div>;
+    }
 
     return (
         <div
             className={`${className} flex flex-col justify-around align-middle text-center text-cyan-950`}
         >
-            <section className="flex flex-col md:flex-row justify-around align-middle text-center mb-4">
-                <div className="mx-auto md:me-4">
+            <section className="flex flex-col 2xl:flex-row justify-around align-middle text-center mb-4">
+                <div className="mx-auto md:me-4 my-4">
                     <Swiper
                         modules={[Navigation, Pagination]}
                         navigation
@@ -40,7 +71,7 @@ export default function PropertyDetails({ className }) {
                         ))}
                     </Swiper>
                 </div>
-                <div className="mx-auto md:me-4">
+                <div className="mx-auto md:me-4 my-4">
                     <MapComponent
                         lat={property.address.latitude}
                         long={property.address.longitude}
@@ -138,12 +169,35 @@ export default function PropertyDetails({ className }) {
                             {property.propertyDetails.energeticCertificate}
                         </p>
                     </div>
-                    <NavLink
-                        className="border border-cyan-950 text-cyan-950 hover:bg-cyan-900 hover:text-cyan-200 md:text-lg rounded-lg m-4 p-2"
-                        to={`/home`}
-                    >
-                        To Auction
-                    </NavLink>
+                    {selectedAuctionRoom && (
+                        <NavLink
+                            className="border border-cyan-950 text-cyan-950 hover:bg-cyan-900 hover:text-cyan-200 md:text-lg rounded-lg m-4 p-2"
+                            to={`/auctions/${selectedAuctionRoom.id}`}
+                        >
+                            To Auction
+                        </NavLink>
+                    )}
+                    {!selectedAuctionRoom &&
+                        (user.role === "AGENT" || user.role === "ADMIN") && (
+                            <Form onSubmit={handleCreateAuction}>
+                                <FormInputElement
+                                    title="Select start date"
+                                    id="startDate"
+                                    type="date"
+                                    name="startDate"
+                                    required
+                                    onChange={(e) =>
+                                        setStartDate(e.target.value)
+                                    }
+                                />
+                                <button
+                                    type="submit"
+                                    className="border border-cyan-950 text-cyan-950 hover:bg-cyan-900 hover:text-cyan-200 md:text-lg rounded-lg m-4 p-2"
+                                >
+                                    Create Auction
+                                </button>
+                            </Form>
+                        )}
                 </div>
             </section>
         </div>

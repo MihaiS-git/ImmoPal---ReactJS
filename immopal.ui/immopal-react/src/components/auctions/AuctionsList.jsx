@@ -1,17 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllAgencies } from "../../store/agencies-slice.js";
-import AgencyCard from "./AgencyCard.jsx";
+import { getAllAuctionRooms } from "../../store/auction-rooms-slice.js";
+import AuctionRoomCard from "./AuctionRoomCard.jsx";
 
-export default function AgenciesList({ className }) {
+export default function AuctionsList({ className }) {
     const dispatch = useDispatch();
-    const agencies = useSelector((state) => state.agencies.agencies);
-    
-    const { loading, error } = useSelector((state) => state.agencies);
 
     useEffect(() => {
-        dispatch(getAllAgencies());
+        dispatch(getAllAuctionRooms());
     }, [dispatch]);
+
+    const { auctionRooms, loading, error } = useSelector(
+        (state) => state.auctionRooms
+    );
 
     if (loading) {
         return (
@@ -40,18 +41,22 @@ export default function AgenciesList({ className }) {
             className={`${className} flex flex-col justify-around align-middle text-center mx-8 font-medium font-serif text-cyan-900 text-3xl`}
         >
             <div className="bg-cyan-200 rounded-3xl mb-10 w-64 sm:w-96 mx-auto">
-                <h2>Agencies</h2>
+                <h2>Auctions</h2>
             </div>
 
             <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {agencies.map((agency) => {
-                    return (
-                        <li key={agency.id} className="my-8">
-                            <AgencyCard agency={agency} />
-                        </li>
-                    );
-                })}
+                {auctionRooms &&
+                    (auctionRooms || []).map((auction) => {
+                        return (
+                            <li key={auction.id} className="my-8">
+                                <AuctionRoomCard auctionRoom={auction} />
+                            </li>
+                        );
+                    })}
             </ul>
+            {!auctionRooms && (
+                <p>No auction room found. Please try again later.</p>
+            )}
         </div>
     );
 }

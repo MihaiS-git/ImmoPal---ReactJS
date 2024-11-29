@@ -12,6 +12,8 @@ import AgencyPropertiesPage from "./pages/AgencyPropertiesPage.jsx";
 import PropertyPage from "./pages/PropertyPage.jsx";
 import PropertiesPage from "./pages/PropertiesPage.jsx";
 import AccountPage from './pages/AccountPage.jsx';
+import AuctionsPage from './pages/AuctionsPage.jsx';
+import AuctionPage from './pages/AuctionPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -61,6 +63,14 @@ const router = createBrowserRouter([
       {
         path: 'properties',
         element: <PropertiesPage/>
+      },
+      {
+        path: 'auctions',
+        element: <AuctionsPage/>
+      },
+      {
+        path: 'auctions/:id',
+        element: <AuctionPage/>
       }
     ],
   }

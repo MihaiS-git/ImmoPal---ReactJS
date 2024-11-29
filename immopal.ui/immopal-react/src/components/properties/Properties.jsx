@@ -1,19 +1,21 @@
-import { useDispatch, useSelector } from 'react-redux';
-import PropertyCard from '../agencies/properties/PropertyCard.jsx';
-import { useEffect } from 'react';
-import { getAllProperties } from '../../store/properties-slice.js';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllProperties } from "../../store/properties-slice.js";
 
-export default function Properties({ className }) { 
+import PropertyCard from "../agencies/properties/PropertyCard.jsx";
+
+export default function Properties({ className }) {
     const dispatch = useDispatch();
-    const properties = useSelector((state) => state.properties?.properties);
-    const loading = useSelector((state) => state.properties?.loading);
-
+    
     useEffect(() => {
         dispatch(getAllProperties());
-    },[dispatch]);
+    }, [dispatch]);
+    
+    const loading = useSelector((state) => state.properties.loading);
+    const properties = useSelector((state) => state.properties.properties);
 
     if (loading) return <div>Loading...</div>;
-    if (!properties) return <div>No properties found.</div>;
+    if (!properties || properties.length === 0) return <div>No properties found.</div>;
 
     return (
         <div
