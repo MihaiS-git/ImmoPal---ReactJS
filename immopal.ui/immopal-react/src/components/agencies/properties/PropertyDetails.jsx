@@ -178,7 +178,7 @@ export default function PropertyDetails({ className }) {
                         </NavLink>
                     )}
                     {!selectedAuctionRoom &&
-                        (user.role === "AGENT" || user.role === "ADMIN") && (
+                        (user && (user.role === "AGENT" || user.role === "ADMIN")) && (
                             <Form onSubmit={handleCreateAuction}>
                                 <FormInputElement
                                     title="Select start date"

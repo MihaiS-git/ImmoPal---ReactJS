@@ -5,6 +5,8 @@ const BASE_URL = 'http://localhost:8080/api';
 const getPersonById = createAsyncThunk(
     'person/getPersonById',
     async (id, { rejectWithValue }) => {
+        console.log("Fetching person by ID.");
+        
         try {
             const response = await fetch(`${BASE_URL}/persons/id/${id}`);
             if (!response.ok) {
@@ -21,7 +23,7 @@ const getPersonById = createAsyncThunk(
 
 const updatePerson = createAsyncThunk(
     'person/updatePerson',
-    async ({id, updateRequest }, {rejectWithValue }) => {
+    async ({ id, updateRequest }, { rejectWithValue }) => {
         try {
             const response = await fetch(`${BASE_URL}/persons/${id}`, {
                 method: 'PUT',
@@ -48,7 +50,7 @@ const updatePerson = createAsyncThunk(
 const personSlice = createSlice({
     name: 'person',
     initialState: {
-        person: [],
+        person: null,
         loading: false,
         error: null
     },

@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import persistedReducer from "./reducers";
 import { persistStore } from 'redux-persist';
+import auctionMiddleware from '../util/auction-middleware.js';
 
 const store = configureStore({
     reducer: persistedReducer,
@@ -14,6 +15,7 @@ const store = configureStore({
                 ]
             }
         })
+    .concat(auctionMiddleware),
 });
 
 const persistor = persistStore(store);

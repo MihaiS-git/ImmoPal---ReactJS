@@ -126,11 +126,13 @@ export default function AccountComponent() {
             className="w-11/12 sm:w-8/12 md:w-1/2 lg:w-5/12 xl:w-3/12 2xl:w-3/12 flex flex-col justify-center align-middle bg-cyan-200 px-4 md:px-8 rounded-lg"
             onSubmit={handleSubmit}
         >
-            <img
-                src={person.pictureUrl}
-                alt={person.lastName}
-                className="w-full object-cover rounded-t-lg mt-8"
-            />
+            {person && (
+                <img
+                    src={person.pictureUrl}
+                    alt={person.lastName}
+                    className="w-full object-cover rounded-t-lg mt-8"
+                />
+            )}
 
             <FormInputElement
                 title="First Name"

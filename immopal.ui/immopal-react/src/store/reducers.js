@@ -9,11 +9,12 @@ import propertiesByAgencyReducer from './agency-properties-slice.js';
 import propertiesReducer from './properties-slice.js';
 import personReducer from './person-slice.js';
 import auctionRoomsReducer from './auction-rooms-slice.js';
+import bidsReducer from './bids-slice.js';
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['auth', 'agencies', 'agents', 'propertiesByAgency', 'properties', 'person', 'auctionRooms']
+    whitelist: ['auth', 'agencies', 'agents', 'propertiesByAgency', 'properties', 'person', 'auctionRooms', 'bids']
 };
 
 const combinedReducer = combineReducers({
@@ -23,7 +24,8 @@ const combinedReducer = combineReducers({
     propertiesByAgency: propertiesByAgencyReducer,
     properties: propertiesReducer,
     person: personReducer,
-    auctionRooms: auctionRoomsReducer
+    auctionRooms: auctionRoomsReducer,
+    bids: bidsReducer
 });
 
 const rootReducer = (state, action) => {
