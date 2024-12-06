@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Form, useParams } from "react-router-dom";
+import { Form, useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { getPersonById } from "../../store/person-slice.js";
 import { stompClient } from "../../util/auction-websocket-client.js";
@@ -12,6 +12,7 @@ import { setBids } from "../../store/bids-slice.js";
 import { selectAuctionRoomById } from "../../store/auction-rooms-slice.js";
 
 export default function AuctionRoom() {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { id: auctionId } = useParams();
     const token = useSelector((state) => state.auth?.token);
@@ -40,33 +41,28 @@ export default function AuctionRoom() {
     }, [currentPersonId, dispatch]);
 
     useEffect(() => {
-        console.log("AuctionRoom component mounted");
         dispatch(connectStomp());
 
         const subscribeToBids = () => {
             if (stompClient.connected) {
-                console.log("WebSocket connected, subscribing...");
                 return stompClient.subscribe(
                     `/topic/auction/${auctionId}/bids`,
                     (message) => {
-                        console.log("Received: ", message.body);
                         const bid = JSON.parse(message.body);
                         dispatch(addBid(bid));
                     }
                 );
             } else {
-                console.log("Waiting for WebSocket connection...");
                 stompClient.onConnect = () => {
-                    console.log("WebSocket connected, subscribing...");
                     return stompClient.subscribe(
                         `/topic/auction/${auctionId}/bids`,
                         (message) => {
-                            console.log("Received: ", message.body);
                             const bid = JSON.parse(message.body);
                             dispatch(addBid(bid));
                         }
                     );
                 };
+                stompClient.activate();
             }
         };
 
@@ -75,7 +71,6 @@ export default function AuctionRoom() {
         return () => {
             if (stompClient && stompClient.connected) {
                 subscription.unsubscribe();
-                console.log("Unsubscribed from room:", auctionId);
             } else {
                 console.warn(
                     "STOMP client not connected; no unsubscribe performed."
@@ -95,6 +90,20 @@ export default function AuctionRoom() {
         const amount = parseFloat(bidAmount);
         if (isNaN(amount) || amount <= 0) {
             alert("Please enter a valid bid amount greater than 0");
+            return;
+        }
+
+        if (amount <= auctionRoom.maxBidAmount) {
+            alert(
+                "The bid amount must be greater than the maximum existent bid."
+            );
+            return;
+        }
+
+        if (amount <= auctionRoom.startBidAmount) {
+            alert(
+                "The bid amount must be greater than the fixed starting bid amount."
+            );
             return;
         }
 
@@ -132,75 +141,104 @@ export default function AuctionRoom() {
         }
     }
 
+    const formatPrice = (price) => {
+        return new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+        }).format(price);
+    };
+
+    const handleGoToProperty = () => {
+        navigate(`/properties/${auctionRoom.property.id}`);
+    };
+
     return (
         <div className="flex flex-col xl:flex-row align-middle justify-center">
-            <div className="border border-cyan-200 rounded-lg shadow-[2px_2px_6px] shadow-cyan-950 w-96 h-full bg-cyan-900 m-4">
-                <section className="flex flex-col justify-around align-middle mb-4">
-                    <div className="text-cyan-200 text-base">
-                        <img
-                            src={
-                                auctionRoom.property.propertyImages[0].imageUrl
-                            }
-                            alt="property image"
-                            className="w-full h-full rounded-t-lg"
-                        />
+            <div
+                className="border border-cyan-200 rounded-lg shadow-[2px_2px_6px] shadow-cyan-950 w-96 h-10/12 bg-cyan-900 hover:bg-cyan-700 m-4"
+                onClick={handleGoToProperty}
+            >
+                <div className=" text-cyan-200 text-base flex flex-col justify-around align-middle mb-4">
+                    <img
+                        src={auctionRoom.property.propertyImages[0].imageUrl}
+                        alt="property image"
+                        className="w-full h-full rounded-t-lg"
+                    />
+                </div>
+                <div className="w-full text-cyan-200 text-center">
+                    <h3 className="font-bold font-serif text-2xl mt-4">
+                        {auctionRoom.property.transactionType}
+                    </h3>
+                    <div className="font-normal font-serif mx-4">
+                        <p className="text-base">
+                            <strong>Description: </strong>
+                            {auctionRoom.property.propertyDetails.description}
+                        </p>
                     </div>
-                    <div className="w-full text-cyan-200 text-center">
-                        <h3 className="font-bold font-serif text-2xl mt-4">
-                            {auctionRoom.property.transactionType}
-                        </h3>
-                        <div className="font-normal font-serif mx-4">
-                            <p className="text-base">
-                                <strong>Description: </strong>
-                                {
-                                    auctionRoom.property.propertyDetails
-                                        .description
-                                }
-                            </p>
-                        </div>
-                    </div>
-                    <hr className="border-cyan-200 mx-4 mb-4" />
-                    <div className="w-full text-cyan-200 text-base text-center mb-4">
-                        <strong>Start: </strong>{" "}
-                        {format(
-                            new Date(auctionRoom.startDate),
-                            "yyyy-MM-dd HH:mm:ss"
-                        )}
-                        <br />
-                        <strong>End: </strong>{" "}
-                        {format(
-                            new Date(auctionRoom.endDate),
-                            "yyyy-MM-dd HH:mm:ss"
-                        )}
-                    </div>
-                    <hr className="border-cyan-200 mx-4 mb-4" />
+                </div>
+                <hr className="border-cyan-200 mx-4 mb-4" />
+                <div className="w-full text-cyan-200 text-base text-center mb-4">
+                    <strong>Start: </strong>{" "}
+                    {format(
+                        new Date(auctionRoom.startDate),
+                        "yyyy-MM-dd HH:mm:ss"
+                    )}
+                    <br />
+                    <strong>End: </strong>{" "}
+                    {format(
+                        new Date(auctionRoom.endDate),
+                        "yyyy-MM-dd HH:mm:ss"
+                    )}
+                </div>
+                <hr className="border-cyan-200 mx-4 mb-4" />
 
+                <div className="w-full text-cyan-200 text-base text-center mb-4">
+                    <strong>Status: </strong> {auctionRoom.auctionStatus}
+                </div>
+                <hr className="border-cyan-200 mx-4 mb-4" />
+                {!bids ? (
                     <div className="w-full text-cyan-200 text-base text-center mb-4">
-                        <strong>Status: </strong> {auctionRoom.auctionStatus}
+                        <strong>Start price: </strong>{" "}
+                        {formatPrice(auctionRoom.startBidAmount)}
                     </div>
-                </section>
+                ) : (
+                    <div className="w-full text-cyan-200 text-base text-center mb-4">
+                        <strong>Current value: </strong>{" "}
+                        {formatPrice(auctionRoom.maxBidAmount)}
+                    </div>
+                )}
             </div>
-            <div className="border border-cyan-200 rounded-lg shadow-[2px_2px_6px] shadow-cyan-950 w-96 h-full bg-cyan-900 text-cyan-200 m-4 p-4">
+            <div className="border border-cyan-200 rounded-lg shadow-[2px_2px_6px] shadow-cyan-950 w-96 h-full bg-cyan-900 text-cyan-200 m-4">
                 <section>
                     <ul>
                         {bids &&
                             bids.length > 0 &&
                             bids.slice(-10).map((bid, index) => (
-                                <li key={index}>
-                                    <p>#{index + 1}</p>
-                                    <strong>Bid:</strong> {bid.amount} -{" "}
+                                <li
+                                    key={index}
+                                    className="border border-cyan-200 p-2"
+                                >
+                                    <strong>Bid:</strong>{" "}
+                                    {formatPrice(bid.amount)} -{" "}
                                     <strong>By:</strong>{" "}
                                     {bid.sender?.firstName || "Unknown"}{" "}
                                     {bid.sender?.lastName || ""}
                                     <br />
                                     <small>
                                         <strong>Time:</strong>{" "}
-                                        {bid.timestamp || "Unknown"}
+                                        {format(
+                                            new Date(bid.timestamp),
+                                            "yyyy-MM-dd/HH:mm:ss"
+                                        ) || "Unknown"}
                                     </small>
                                 </li>
                             ))}
 
-                        {(!bids || bids.length <= 0) && <p>No bids yet...</p>}
+                        {(!bids || bids.length <= 0) && (
+                            <p className="p-10 text-center text-lg">
+                                No bids yet. Maybe place the first bid...
+                            </p>
+                        )}
                     </ul>
                 </section>
             </div>

@@ -2,25 +2,27 @@ import { stompClient } from './auction-websocket-client.js';
 import { setConnected, setError } from '../store/bids-slice.js';
 
 const auctionMiddleware = (store) => (next) => (action) => {
-    console.log('Middleware action:', action.type);
     switch (action.type) {
         case 'connect':
             if (!stompClient.connected) {
                 stompClient.activate();
                 stompClient.onConnect = () => {
-                    console.log('STOMP client connected');
                     store.dispatch(setConnected(true));
+                };
+                stompClient.onWebSocketError = (error) => {
+                    console.error('WebSocket error occurred:', error);
                 };
                 stompClient.onStompError = (frame) => {
                     console.error('STOMP error:', frame.body);
                     store.dispatch(setError(frame.body));
                 };
+            } else {
+                console.log('STOMP client is already connected');
             }
             break;
         case 'disconnect':
             if (stompClient.connected) {
                 stompClient.deactivate();
-                console.log('STOMP client disconnected');
                 store.dispatch(setConnected(false));
             }
             break;

@@ -12,17 +12,27 @@ export default function AccountComponent() {
         dateOfBirth: "",
         address: "",
     });
+    const [formState, setFormState] = useState({
+        firstName: "",
+        lastName: "",
+        phoneNumber: "",
+        dateOfBirth: "",
+        address: "",
+    });
 
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user);
     const { person, loading, error } = useSelector((state) => state.person);
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [dateOfBirth, setDateOfBirth] = useState();
-    const [address, setAddress] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+
+    const isFormTouched = person && (
+        formState.firstName !== person.firstName ||
+        formState.lastName !== person.lastName ||
+        formState.phoneNumber !== person.phoneNumber ||
+        formState.dateOfBirth !== person.dateOfBirth ||
+        formState.address !== person.address
+    );
 
     useEffect(() => {
         if (user?.personId) {
@@ -32,11 +42,13 @@ export default function AccountComponent() {
 
     useEffect(() => {
         if (person) {
-            setFirstName(person.firstName || "");
-            setLastName(person.lastName || "");
-            setPhoneNumber(person.phoneNumber || "");
-            setDateOfBirth(person.dateOfBirth || "");
-            setAddress(person.address || "");
+            setFormState({
+                firstName: person.firstName || "",
+                lastName: person.lastName || "",
+                phoneNumber: person.phoneNumber || "",
+                dateOfBirth: person.dateOfBirth || "",
+                address: person.address || "",
+            });
         }
     }, [person]);
 
@@ -50,6 +62,16 @@ export default function AccountComponent() {
 
     let formIsValid = true;
 
+    function handleInputChange(field, value) {
+        setFormState((prevState) => ({
+            ...prevState,
+            [field]: value,
+        }));
+        if (successMessage) {
+            setSuccessMessage("");
+        }
+    }
+
     function handleSubmit(event) {
         event.preventDefault();
 
@@ -61,25 +83,26 @@ export default function AccountComponent() {
             address: "",
         };
 
-        if (firstName.length < 2) {
+        if (formState.firstName.length < 2) {
             newErrors.firstName =
                 "First name must be at least 2 characters long.";
             formIsValid = false;
         }
 
-        if (lastName.length < 2) {
+        if (formState.lastName.length < 2) {
             newErrors.lastName =
                 "Last name must be at least 2 characters long.";
             formIsValid = false;
         }
 
         const phoneRegex = /^\d{10}$/;
-        if (!phoneRegex.test(phoneNumber)) {
+        if (!phoneRegex.test(formState.phoneNumber)) {
             newErrors.phoneNumber = "Phone number must be 10 digits long.";
             formIsValid = false;
         }
 
-        const dob = new Date(dateOfBirth);
+        const dob = new Date(formState.dateOfBirth);
+
         const age = new Date().getFullYear() - dob.getFullYear();
         if (age < 18) {
             newErrors.dateOfBirth =
@@ -87,7 +110,7 @@ export default function AccountComponent() {
             formIsValid = false;
         }
 
-        if (!address.trim()) {
+        if (!formState.address.trim()) {
             newErrors.address = "Please enter your address.";
             formIsValid = false;
         }
@@ -97,11 +120,7 @@ export default function AccountComponent() {
         if (formIsValid) {
             const updateRequest = {
                 id: +person.id,
-                firstName,
-                lastName,
-                phoneNumber,
-                dateOfBirth,
-                address,
+                ...formState,
                 pictureUrl: person.pictureUrl,
                 userId: +person.userId,
                 propertyIds: person.propertyIds,
@@ -123,7 +142,7 @@ export default function AccountComponent() {
 
     return (
         <Form
-            className="w-11/12 sm:w-8/12 md:w-1/2 lg:w-5/12 xl:w-3/12 2xl:w-3/12 flex flex-col justify-center align-middle bg-cyan-200 px-4 md:px-8 rounded-lg"
+            className="w-full sm:w-10/12 xl:w-8/12 2xl:w-6/12 flex flex-col justify-center align-middle bg-cyan-200 px-4 md:px-8 rounded-lg"
             onSubmit={handleSubmit}
         >
             {person && (
@@ -138,8 +157,8 @@ export default function AccountComponent() {
                 title="First Name"
                 id="firstName"
                 type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                value={formState.firstName || ""}
+                onChange={(e) => handleInputChange("firstName", e.target.value)}
             />
             {errors.firstName && (
                 <p className="text-red-500 text-sm">{errors.firstName}</p>
@@ -149,8 +168,8 @@ export default function AccountComponent() {
                 title="Last Name"
                 id="lastName"
                 type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                value={formState.lastName || ""}
+                onChange={(e) => handleInputChange("lastName", e.target.value)}
             />
             {errors.lastName && (
                 <p className="text-red-500 text-sm">{errors.lastName}</p>
@@ -160,8 +179,8 @@ export default function AccountComponent() {
                 title="Phone"
                 id="phoneNumber"
                 type="text"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                value={formState.phoneNumber || ""}
+                onChange={(e) => handleInputChange("phoneNumber", e.target.value)}
             />
             {errors.phoneNumber && (
                 <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
@@ -171,8 +190,8 @@ export default function AccountComponent() {
                 title="Date of birth"
                 id="dateOfBirth"
                 type="date"
-                value={dateOfBirth}
-                onChange={(e) => setDateOfBirth(e.target.value)}
+                value={formState.dateOfBirth || ""}
+                onChange={(e) => handleInputChange("dateOfBirth",e.target.value)}
             />
             {errors.dateOfBirth && (
                 <p className="text-red-500 text-sm">{errors.dateOfBirth}</p>
@@ -182,8 +201,8 @@ export default function AccountComponent() {
                 title="Address"
                 id="address"
                 type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                value={formState.address || ""}
+                onChange={(e) => handleInputChange("address",e.target.value)}
             />
             {errors.address && (
                 <p className="text-red-500 text-sm">{errors.address}</p>
@@ -192,8 +211,8 @@ export default function AccountComponent() {
             <div className="w-full flex justify-center my-4">
                 <button
                     type="submit"
-                    className="bg-cyan-800 text-cyan-100 hover:bg-cyan-100 hover:text-cyan-800 rounded-md p-1 w-1/3"
-                    disabled={!formIsValid}
+                    className="bg-cyan-800 text-cyan-100 hover:bg-cyan-100 hover:text-cyan-800 disabled:bg-cyan-300 disabled:text-cyan-500 rounded-md p-1 w-1/3"
+                    disabled={!isFormTouched || !formIsValid }
                 >
                     Save
                 </button>

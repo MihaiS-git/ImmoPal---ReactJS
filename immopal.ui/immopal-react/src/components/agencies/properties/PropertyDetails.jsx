@@ -52,7 +52,7 @@ export default function PropertyDetails({ className }) {
         <div
             className={`${className} flex flex-col justify-around align-middle text-center text-cyan-950`}
         >
-            <section className="flex flex-col 2xl:flex-row justify-around align-middle text-center mb-4">
+            <section className="flex flex-col 2xl:flex-row justify-center align-middle text-center mb-4">
                 <div className="mx-auto md:me-4 my-4">
                     <Swiper
                         modules={[Navigation, Pagination]}
@@ -77,7 +77,7 @@ export default function PropertyDetails({ className }) {
                         long={property.address.longitude}
                     />
                 </div>
-                <div className="w-full md:w-96">
+                <div className="w-full md:w-96 self-center">
                     <h3 className="font-bold font-serif text-xl md:text-2xl lg:text-3xl mt-4">
                         {property.transactionType}
                     </h3>

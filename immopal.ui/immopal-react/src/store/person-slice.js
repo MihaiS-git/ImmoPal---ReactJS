@@ -5,8 +5,6 @@ const BASE_URL = 'http://localhost:8080/api';
 const getPersonById = createAsyncThunk(
     'person/getPersonById',
     async (id, { rejectWithValue }) => {
-        console.log("Fetching person by ID.");
-        
         try {
             const response = await fetch(`${BASE_URL}/persons/id/${id}`);
             if (!response.ok) {
