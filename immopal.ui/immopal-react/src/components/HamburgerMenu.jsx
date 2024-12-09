@@ -32,7 +32,6 @@ export default function HamburgerMenu({ openState, handleClose }) {
                         onClick={handleClose}
                     />
                     {isAuthenticated && <MenuElement title="Auctions" toTarget="auctions" onClick={handleClose}/>}
-                    {isAuthenticated && <MenuElement title="Chat" />}
                     {isAuthenticated && (
                         <MenuElement
                             title="Account"

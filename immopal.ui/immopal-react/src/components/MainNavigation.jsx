@@ -20,7 +20,6 @@ export default function MainNavigation() {
                 <MenuElement title="Agencies" toTarget="/agencies" />
                 <MenuElement title="Properties" toTarget="/properties"/>
                 {isAuthenticated && <MenuElement title="Auctions" toTarget="auctions"/>}
-                {isAuthenticated && <MenuElement title="Chat" />}
                 {isAuthenticated && <MenuElement title="Account" toTarget="/account" />}
                 <MenuElement title="Contact" toTarget="/contact" />
                 {!isAuthenticated ? (
