@@ -3,6 +3,13 @@ import { useNavigate } from "react-router-dom";
 export default function PropertyCard({ property }) { 
     const navigate = useNavigate();
 
+    function formatPrice(price) {
+        return new Intl.NumberFormat('en-US', {
+            style: "currency",
+            currency: "USD"
+        }).format(price);
+    }
+
     function handleClick() { 
         navigate(`/properties/${property.id}`);
     }
@@ -26,7 +33,7 @@ export default function PropertyCard({ property }) {
             </p>
             <hr className="border border-cyan-200 mx-4" />
             <p className="text-base text-cyan-400 my-2 mx-4 sm:text-sm">
-                <strong>Starting Price: </strong>{property.price}
+                <strong>Starting Price: </strong>{formatPrice(property.price)}
             </p>
         </div>
     );

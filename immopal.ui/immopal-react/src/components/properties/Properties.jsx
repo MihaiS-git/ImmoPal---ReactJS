@@ -7,12 +7,12 @@ import PropertyCard from "../agencies/properties/PropertyCard.jsx";
 export default function Properties({ className }) {
     const dispatch = useDispatch();
     
+    const loading = useSelector((state) => state.properties.loading);
+    const properties = useSelector((state) => state.properties.properties);
+    
     useEffect(() => {
         dispatch(getAllProperties());
     }, [dispatch]);
-    
-    const loading = useSelector((state) => state.properties.loading);
-    const properties = useSelector((state) => state.properties.properties);
 
     if (loading) return <div>Loading...</div>;
     if (!properties || properties.length === 0) return <div>No properties found.</div>;
