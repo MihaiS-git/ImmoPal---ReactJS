@@ -20,6 +20,7 @@ export default function AuctionRoom() {
     const auctionRoom = useSelector((state) =>
         selectAuctionRoomById(state, auctionId)
     );
+
     const bids = useSelector((state) => state.bids.bids);
 
     const [bidAmount, setBidAmount] = useState(0);
@@ -35,13 +36,15 @@ export default function AuctionRoom() {
     }, [auctionRoom, dispatch]);
 
     useEffect(() => {
-        if (currentPersonId) {
+        if (currentPersonId && !currentPerson) {
             dispatch(getPersonById(currentPersonId));
         }
-    }, [currentPersonId, dispatch]);
+    }, [currentPersonId, currentPerson, dispatch]);
 
     useEffect(() => {
         dispatch(connectStomp());
+
+        let subscription;
 
         const subscribeToBids = () => {
             if (stompClient.connected) {
@@ -66,10 +69,10 @@ export default function AuctionRoom() {
             }
         };
 
-        const subscription = subscribeToBids();
+        subscription = subscribeToBids();
 
         return () => {
-            if (stompClient && stompClient.connected) {
+            if (subscription && stompClient.connected) {
                 subscription.unsubscribe();
             } else {
                 console.warn(
@@ -105,7 +108,7 @@ export default function AuctionRoom() {
                 "The bid amount must be greater than the fixed starting bid amount."
             );
             return;
-        }
+        }        
 
         const bidRequest = {
             id: null,
@@ -149,7 +152,7 @@ export default function AuctionRoom() {
     };
 
     const handleGoToProperty = () => {
-        navigate(`/properties/${auctionRoom.property.id}`);
+        navigate(`/properties/${auctionRoom.property?.id}`);
     };
 
     return (
@@ -160,19 +163,19 @@ export default function AuctionRoom() {
             >
                 <div className=" text-cyan-200 text-base flex flex-col justify-around align-middle mb-4">
                     <img
-                        src={auctionRoom.property.propertyImages[0].imageUrl}
+                        src={auctionRoom.property?.propertyImages[0]?.imageUrl}
                         alt="property image"
                         className="w-full h-full rounded-t-lg"
                     />
                 </div>
                 <div className="w-full text-cyan-200 text-center">
                     <h3 className="font-bold font-serif text-2xl mt-4">
-                        {auctionRoom.property.transactionType}
+                        {auctionRoom.property?.transactionType || "N/A"}
                     </h3>
                     <div className="font-normal font-serif mx-4">
                         <p className="text-base">
                             <strong>Description: </strong>
-                            {auctionRoom.property.propertyDetails.description}
+                            {auctionRoom.property?.propertyDetails?.description}
                         </p>
                     </div>
                 </div>
@@ -243,27 +246,48 @@ export default function AuctionRoom() {
                 </section>
             </div>
             <div className="border border-cyan-200 rounded-lg shadow-[2px_2px_6px] shadow-cyan-950 w-96 h-full bg-cyan-900 m-4">
-                <Form onSubmit={handlePlaceBid} className="p-2">
-                    <label htmlFor="bidAmount" className="text-cyan-200">
-                        Enter your bid amount:
-                    </label>
-                    <input
-                        id="bidAmount"
-                        name="bidAmount"
-                        type="number"
-                        onChange={(e) => setBidAmount(e.target.value)}
-                        placeholder="e.g., 100"
-                        min="1"
-                        required
-                        className="rounded-lg m-4 p-2"
-                    />
-                    <button
-                        type="submit"
-                        className="bg-cyan-950 text-cyan-200 hover:bg-cyan-200 hover:text-cyan-950 m-4 p-2 rounded-lg"
-                    >
-                        Place Bid
-                    </button>
-                </Form>
+                {auctionRoom.auctionStatus === "ACTIVE" ? (
+                    <Form onSubmit={handlePlaceBid} className="p-2">
+                        <label htmlFor="bidAmount" className="text-cyan-200">
+                            Enter your bid amount:
+                        </label>
+                        <input
+                            id="bidAmount"
+                            name="bidAmount"
+                            type="number"
+                            value={bidAmount}
+                            onChange={(e) => setBidAmount(e.target.value)}
+                            placeholder="e.g., 100"
+                            min="1"
+                            required
+                            className="rounded-lg m-4 p-2"
+                        />
+                        <button
+                            type="submit"
+                            className="bg-cyan-950 text-cyan-200 hover:bg-cyan-200 hover:text-cyan-950 m-4 p-2 rounded-lg"
+                        >
+                            Place Bid
+                        </button>
+                    </Form>
+                ) : (
+                    <div className="text-cyan-200 p-4">
+                        <p>
+                            <strong>WINNER: </strong>
+                            {auctionRoom.winner}
+                        </p>
+                        <p>
+                            <strong>BID: </strong>
+                            {auctionRoom.maxBidAmount}
+                        </p>
+                        <p>
+                            <strong>DATE: </strong>
+                            {format(
+                                auctionRoom.lastModifiedDate,
+                                "yyyy-MM-dd HH:mm:ss"
+                            )}
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
     );
